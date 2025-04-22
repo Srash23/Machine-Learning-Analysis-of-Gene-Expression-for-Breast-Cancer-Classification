@@ -1,64 +1,81 @@
-# Breast Cancer Gene Expression Analysis
+# Gene Expression-Based Classification of Breast Adenocarcinoma
 
-## Introduction
+This repository presents a logistic regression model to classify breast tissue samples as either **normal** or **adenocarcinoma**, using transcriptomic gene expression data. The workflow involves standardizing features, training a logistic regression model, interpreting coefficients to identify key predictive genes, and visualizing the results.
 
-Breast cancer, a significant global health issue, necessitates advanced diagnostic approaches. This study integrates oncology with machine learning, utilizing logistic regression to analyze large-scale gene expression data. The objective is to identify key genes that distinguish between 'normal' and 'adenocarcinoma' breast cancer classes. By examining the expression levels of approximately 35,982 genes, the analysis reveals critical patterns aiding early detection and personalized treatment strategies.
-![_- visual selection](https://github.com/user-attachments/assets/a1cb49fc-2ede-4f7a-8c19-536f5dc4b56e)
+## Project Overview
 
-## Installation and Usage (For End-Users)
+This project applies logistic regression on high-dimensional transcriptomic data to distinguish normal breast tissue from breast adenocarcinoma. It demonstrates the utility of simple linear models in bioinformatics and provides biological insights through gene feature interpretation.
 
-**1. Install Python (>=3.7) and necessary libraries:**
+## Objectives
 
-pip install pandas scikit-learn plotly
+- Preprocess transcriptomic data and remove non-informative identifiers  
+- Standardize gene expression values for model training  
+- Train a logistic regression classifier to predict tumor status  
+- Extract and interpret model coefficients to identify top predictive genes  
+- Visualize gene influence using bar plots, heatmaps, and dimensionality reduction
 
-**2. Clone the repository:**
+## Dataset Description
 
-git clone https://github.com/Srash23/Breast-Cancer-Gene-Expression.git
+| Component        | Description                                           |
+|------------------|--------------------------------------------------------|
+| `type`           | Class label: `normal` or `breast_adenocarcinoma`       |
+| `samples`        | Sample identifiers (removed during preprocessing)      |
+| Gene columns     | ~36,000 gene/transcript expression values              |
+| Total samples    | 289 breast tissue samples                              |
 
-**3. Navigate to the project directory:**
+## Pipeline Summary
 
-cd Breast-Cancer-Gene-Expression
+### 1. Data Preprocessing
+- Load the gene expression CSV dataset using pandas  
+- Drop the `samples` identifier column  
+- Standardize gene expression features using `StandardScaler`
 
-**4. Run the analysis:**
+### 2. Model Training
+- Split dataset into 80:20 train/test split  
+- Train `LogisticRegression` with `max_iter=10000`  
+- Evaluate performance using accuracy and classification report
 
-python breast_cancer_analysis.py
+### 3. Coefficient Extraction
+- Extract feature coefficients from the trained model  
+- Sort coefficients to identify the top 20 upregulated (adenocarcinoma) and 20 downregulated (normal) genes
 
-## Methodology
+### 4. Visualization (Basic)
+- Create a horizontal bar chart using Plotly Express  
+- Color-code bars by class label to highlight influential genes
 
-### Step 1: Data Preprocessing
+## Visual Analysis
 
-1. The dataset contains gene expression values for normal and adenocarcinoma samples.
+To enhance interpretability and present deeper model diagnostics, additional plots were created using the top 40 genes:
 
-2. Features (gene expression levels) are scaled to standardize values.
+### 1. Coefficient Bar Chart  
+Shows the 20 most upregulated and 20 most downregulated genes influencing the classifier.
+<img width="1349" alt="Screenshot 2025-04-21 at 9 00 38 PM" src="https://github.com/user-attachments/assets/a37671ca-44a2-4411-905a-a8559d64ee48" />
 
-### Step 2: Logistic Regression Model
+### 2. Coefficient Histogram  
+Visualizes the distribution of all model coefficients, highlighting sparsity and directional skewness.
+<img width="589" alt="Screenshot 2025-04-21 at 9 01 03 PM" src="https://github.com/user-attachments/assets/0942f865-9365-473e-8db0-9d8b5241c234" />
 
-1. The dataset is split into training and test sets.
+### 3. Lollipop Chart  
+Provides a clear and minimalistic alternative to bar charts, emphasizing magnitude via dots and stems.
+<img width="1353" alt="Screenshot 2025-04-21 at 9 04 03 PM" src="https://github.com/user-attachments/assets/2a444f62-6642-41b0-af9d-c30d61711ac8" />
 
-2. A logistic regression model is trained to distinguish between the two classes.
+### 4. Heatmap (Top Genes)  
+Visualizes simulated expression profiles of the top 20 genes across synthetic samples, showing clustering patterns.
+<img width="1025" alt="Screenshot 2025-04-21 at 9 02 00 PM" src="https://github.com/user-attachments/assets/3c7da82f-19eb-41b5-a8b3-96a7205f21a4" />
 
-3. Coefficient values are extracted to identify genes with the highest influence on classification.
+### 5. 3D PCA Plot  
+Performs dimensionality reduction using Principal Component Analysis (PCA) on simulated data. Shows sample variance and potential separability in 3D space.
+<img width="393" alt="Screenshot 2025-04-21 at 9 02 53 PM" src="https://github.com/user-attachments/assets/9977c5ff-a0c6-46a3-9975-e08a95d398d6" />
 
-### Step 3: Identifying Key Genes
+## Tools Used
+- **Language**: Python
+- **Libraries**: pandas, scikit-learn, plotly
+- **Model**: Logistic Regression
 
-1. The top 20 most positive and 20 most negative coefficients are selected.
+## Insights & Applications
+- Logistic regression can uncover biologically meaningful gene expression patterns
+- Coefficients offer interpretability for biomarker discovery
+- Visualization aids in the communication of key gene-level drivers in cancer
 
-2. These genes represent potential oncogenes (upregulated in cancer) and tumor suppressors (downregulated in cancer).
-
-### Step 4: Visualization
-
-1. A bar chart visualizes the most influential genes for classification.
-
-## Key Insights
-
-**1. Significant Biomarkers Identified:** Genes like ENST00000426370 and ENST00000358739 show strong predictive influence.
-
-**2. Machine Learning for Cancer Detection:** Logistic regression effectively classifies normal vs. cancerous tissues.
-
-**3. Expression Level Trends:** Some genes are highly upregulated in adenocarcinoma, while others are repressed.
-
-**4. Potential for Clinical Applications:** These findings can assist in biomarker discovery and targeted therapies.
-
-## Conclusion
-
-This study demonstrates how logistic regression applied to gene expression data can uncover key molecular patterns distinguishing breast cancer from normal tissues. The identification of influential genes contributes to cancer diagnostics and personalized medicine, paving the way for targeted therapeutic strategies.
+## License
+MIT License
